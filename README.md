@@ -1,13 +1,14 @@
 # Dataset PT Lokal Komoditi Indonesia
 
 Bahan proyek untuk bot pencatatan transaksi (AI Finance Assistant), Kelompok G3,
-Rework Academy. Repo ini **privat** karena berisi data keuangan riil perusahaan.
+Rework Academy. Repo ini berisi data keuangan riil perusahaan.
 
 ## Peringatan
 
-Data di dalam repo ini adalah data keuangan riil PT Lokal Komoditi Indonesia.
-Jangan dijadikan publik, jangan dibagikan ke luar kelompok, dan jangan
-diunggah ke layanan lain tanpa izin.
+Data di dalam repo ini adalah data keuangan riil PT Lokal Komoditi Indonesia:
+nama pihak, nomor rekening, nominal transaksi, dan bukti transfer. Jangan
+dijadikan publik, jangan dibagikan ke luar kelompok, dan jangan diunggah ke
+layanan lain tanpa izin perusahaan.
 
 ## Isi
 
@@ -53,6 +54,9 @@ Kode ada di repo terpisah: `Project-Rework-G3-AI/ai-finance-assistant`, branch
 Ringkasnya, setelah repo ini di-clone di samping repo kode:
 
 ```bash
+git clone https://github.com/Project-Rework-G3-AI/ai-finance-assistant.git
+git clone https://github.com/Project-Rework-G3-AI/rework-ai-finance-assistant-dataset.git
+
 # dari dalam folder repo kode
 python3 tests/sc01_harness.py --pairs  ../rework-ai-finance-assistant-dataset/sc01/sc01_pairs.csv \
                              --images "../rework-ai-finance-assistant-dataset/Bukti Transaksi Januari 2026"

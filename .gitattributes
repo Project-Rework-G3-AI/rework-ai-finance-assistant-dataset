@@ -1,0 +1,13 @@
+# Berkas biner: jangan diubah barisnya oleh Git.
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.pdf binary
+*.xlsx binary
+
+# Jangan tampilkan diff isi berkas biner.
+*.jpg -diff
+*.jpeg -diff
+*.png -diff
+*.pdf -diff
+*.xlsx -diff

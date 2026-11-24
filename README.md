@@ -6,9 +6,16 @@ Rework Academy. Repo ini berisi data keuangan riil perusahaan.
 ## Peringatan
 
 Data di dalam repo ini adalah data keuangan riil PT Lokal Komoditi Indonesia:
-nama pihak, nomor rekening, nominal transaksi, dan bukti transfer. Jangan
-dijadikan publik, jangan dibagikan ke luar kelompok, dan jangan diunggah ke
-layanan lain tanpa izin perusahaan.
+nama pihak, nomor rekening, nominal transaksi, dan bukti transfer.
+
+**Repo ini sekarang PUBLIK.** Itu keputusan sadar agar seluruh anggota kelompok
+bisa mengakses dataset tanpa perlu ditambahkan satu per satu, dan agar evaluasi
+bisa dijalankan tanpa token GitHub. Konsekuensinya data ini bisa dibaca siapa
+saja yang tahu alamatnya.
+
+Kalau perusahaan meminta data ini ditarik kembali, ubah repo menjadi privat.
+Kode evaluasi sudah mendukung repo privat: isi `GITHUB_TOKEN` di `.env`, dan
+unduhan otomatis memakai jalur API bertoken.
 
 ## Isi
 
@@ -17,16 +24,28 @@ layanan lain tanpa izin perusahaan.
 | `SOP Keuangan/` | 3 berkas | Draf SOP uang keluar, rekonsiliasi bank, dan diagram alir |
 | `Cash Report dan Mutasi Rekening/` | 5 berkas | 3 Cash Report (BNI, BRI, Operasional) dan 2 mutasi rekening PDF |
 | `Bukti Transaksi Januari 2026/` | 118 berkas | Foto bukti transaksi Januari 2026 |
-| `sc01/` | 1 berkas | `sc01_pairs.csv` — daftar 65 pasangan gambar ke baris Cash Report |
+| `pairs.csv` | 1 berkas | daftar 65 pasangan gambar ke baris Cash Report, dipakai bersama semua kriteria |
 
 Total 127 berkas, sekitar 10,9 MB.
 
-## Kegunaan folder `sc01`
+## Kegunaan `pairs.csv`
 
-`sc01_pairs.csv` memetakan 65 foto bukti transaksi ke baris Cash Report yang
-bersesuaian, lengkap dengan kategori yang ditetapkan Admin. Berkas ini dipakai
-untuk mengukur SC-01, yaitu akurasi usulan kategori terhadap kategori yang
-ditetapkan Admin.
+`pairs.csv` memetakan 65 foto bukti transaksi ke baris Cash Report yang
+bersesuaian, lengkap dengan kategori yang ditetapkan Admin.
+
+Berkas ini **dipakai bersama oleh semua kriteria keberhasilan**, bukan hanya
+SC-01. Kolomnya memasok acuan untuk beberapa kriteria sekaligus:
+
+| Kolom | Dipakai oleh |
+|---|---|
+| `kategori_acuan` | SC-01 (akurasi kategori) dan SC-02 (kecocokan kategori) |
+| `tanggal` | SC-02 (kecocokan tanggal) |
+| `nominal_acuan` | SC-02 (kecocokan nominal) |
+| `bank` | SC-02 (kecocokan kantong) |
+| `keterangan_gambar` | SC-02 (kecocokan keterangan) |
+
+Karena itu namanya tidak lagi memakai awalan `sc01`. Nama lama menyiratkan
+berkas ini hanya dipakai satu kriteria, padahal isinya melayani beberapa.
 
 Kolomnya:
 
@@ -40,6 +59,8 @@ Kolomnya:
 | `bank` | kantor bank yang menangani |
 | `keterangan_gambar` | keterangan pada bukti |
 | `kategori_acuan` | kategori yang ditetapkan Admin, dipakai sebagai jawaban benar |
+| `kategori_acuan_asli` | penulisan kategori apa adanya dari Excel, sebelum diselaraskan |
+| `sumber_acuan` | berkas dan tab asal baris acuan |
 | `baris_xlsx` | nomor baris pada berkas Excel Cash Report |
 
 Dari 118 foto, hanya 65 yang bisa dipasangkan 1:1 ke baris Cash Report lewat
@@ -48,8 +69,8 @@ tanggal dan nominal. Sisanya tidak dipakai karena tidak ada baris yang cocok.
 ## Cara memakai bersama kode
 
 Kode ada di repo terpisah: `Project-Rework-G3-AI/ai-finance-assistant`, branch
-`test/sc01-kategori-accuracy`. Petunjuk menjalankan evaluasi ada di
-`docs/sc01-cara-menjalankan.md` pada repo tersebut.
+`test/integration-testing`. Petunjuk menjalankan evaluasi ada di
+`docs/sc-cara-menjalankan.md` pada repo tersebut.
 
 Ringkasnya, setelah repo ini di-clone di samping repo kode:
 
@@ -58,15 +79,15 @@ git clone https://github.com/Project-Rework-G3-AI/ai-finance-assistant.git
 git clone https://github.com/Project-Rework-G3-AI/rework-ai-finance-assistant-dataset.git
 
 # dari dalam folder repo kode
-python3 tests/sc01_harness.py --pairs  ../rework-ai-finance-assistant-dataset/sc01/sc01_pairs.csv \
-                             --images "../rework-ai-finance-assistant-dataset/Bukti Transaksi Januari 2026"
+python3 tests/sc_runner.py --pairs  ../rework-ai-finance-assistant-dataset/pairs.csv \
+                           --images "../rework-ai-finance-assistant-dataset/Bukti Transaksi Januari 2026"
 ```
 
 Atau isi `.env`:
 
 ```ini
-SC01_PAIRS=../rework-ai-finance-assistant-dataset/sc01/sc01_pairs.csv
-SC01_IMAGES=../rework-ai-finance-assistant-dataset/Bukti Transaksi Januari 2026
+SC_PAIRS=../rework-ai-finance-assistant-dataset/pairs.csv
+SC_IMAGES=../rework-ai-finance-assistant-dataset/Bukti Transaksi Januari 2026
 ```
 
 Cara kedua lebih praktis karena tidak perlu menyebut dua jalur setiap kali

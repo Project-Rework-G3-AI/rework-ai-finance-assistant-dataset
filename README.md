@@ -8,14 +8,13 @@ Rework Academy. Repo ini berisi data keuangan riil perusahaan.
 Data di dalam repo ini adalah data keuangan riil PT Lokal Komoditi Indonesia:
 nama pihak, nomor rekening, nominal transaksi, dan bukti transfer.
 
-**Repo ini sekarang PUBLIK.** Itu keputusan sadar agar seluruh anggota kelompok
-bisa mengakses dataset tanpa perlu ditambahkan satu per satu, dan agar evaluasi
-bisa dijalankan tanpa token GitHub. Konsekuensinya data ini bisa dibaca siapa
-saja yang tahu alamatnya.
+**Repo ini publik.** Seluruh anggota kelompok bisa mengakses dataset tanpa
+ditambahkan satu per satu, dan evaluasi bisa dijalankan tanpa token GitHub.
+Data di dalamnya bisa dibaca siapa saja yang tahu alamat repo ini.
 
 Kalau perusahaan meminta data ini ditarik kembali, ubah repo menjadi privat.
-Kode evaluasi sudah mendukung repo privat: isi `GITHUB_TOKEN` di `.env`, dan
-unduhan otomatis memakai jalur API bertoken.
+Kode evaluasi mendukung repo privat: isi `GITHUB_TOKEN` di `.env`, dan unduhan
+otomatis memakai jalur API bertoken.
 
 ## Isi
 
@@ -24,14 +23,13 @@ unduhan otomatis memakai jalur API bertoken.
 | `SOP Keuangan/` | 3 berkas | Draf SOP uang keluar, rekonsiliasi bank, dan diagram alir |
 | `Cash Report dan Mutasi Rekening/` | 5 berkas | 3 Cash Report (BNI, BRI, Operasional) dan 2 mutasi rekening PDF |
 | `Bukti Transaksi Januari 2026/` | 118 berkas | Foto bukti transaksi Januari 2026 |
-| `pairs.csv` | 1 berkas | daftar 65 pasangan gambar ke baris Cash Report, dipakai bersama semua kriteria |
+| `pairs.csv` | 1 berkas | daftar 65 pasangan gambar ke baris Cash Report, dipakai SC-01, SC-02, SC-03, SC-04, dan SC-06 |
 
 Total 127 berkas data, 11,4 MB.
 
 ## Bahan untuk setiap kriteria
 
-Delapan kriteria keberhasilan pada BRD tidak semuanya memakai bahan yang sama.
-Tabel ini memetakan bahan mana yang dipakai kriteria mana.
+Tabel ini memetakan bahan mana yang dipakai tiap kriteria.
 
 | Kriteria | Bahan dari repo ini | Wajib? |
 |---|---|---|
@@ -52,21 +50,17 @@ mengganti nama secara manual.
 ## Kegunaan `pairs.csv`
 
 `pairs.csv` memetakan 65 foto bukti transaksi ke baris Cash Report yang
-bersesuaian, lengkap dengan kategori yang ditetapkan Admin.
-
-Berkas ini **dipakai bersama oleh semua kriteria keberhasilan**, bukan hanya
-SC-01. Kolomnya memasok acuan untuk beberapa kriteria sekaligus:
+bersesuaian, lengkap dengan kategori yang ditetapkan Admin. Berkas ini dipakai
+SC-01, SC-02, SC-03, SC-04, dan SC-06. SC-05 dan SC-08 tidak memakainya.
 
 | Kolom | Dipakai oleh |
 |---|---|
-| `kategori_acuan` | SC-01 (akurasi kategori) dan SC-02 (kecocokan kategori) |
-| `tanggal` | SC-02 (kecocokan tanggal) |
-| `nominal_acuan` | SC-02 (kecocokan nominal) |
-| `bank` | SC-02 (kecocokan kantong) |
-| `keterangan_gambar` | SC-02 (kecocokan keterangan) |
-
-Karena itu namanya tidak lagi memakai awalan `sc01`. Nama lama menyiratkan
-berkas ini hanya dipakai satu kriteria, padahal isinya melayani beberapa.
+| `file` | SC-01, SC-02, SC-03, SC-04, SC-06 (menentukan foto yang diproses) |
+| `kategori_acuan` | SC-01 (jawaban benar untuk akurasi kategori) |
+| `nominal_acuan` | SC-02 (acuan kelengkapan nominal) |
+| `tanggal` | SC-02 (acuan kelengkapan tanggal) |
+| `bank` | SC-02 (acuan kelengkapan kantong) |
+| `keterangan_gambar` | SC-02 (acuan kelengkapan keterangan) |
 
 Kolomnya:
 

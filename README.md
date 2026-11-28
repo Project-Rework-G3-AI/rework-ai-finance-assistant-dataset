@@ -26,7 +26,28 @@ unduhan otomatis memakai jalur API bertoken.
 | `Bukti Transaksi Januari 2026/` | 118 berkas | Foto bukti transaksi Januari 2026 |
 | `pairs.csv` | 1 berkas | daftar 65 pasangan gambar ke baris Cash Report, dipakai bersama semua kriteria |
 
-Total 127 berkas, sekitar 10,9 MB.
+Total 127 berkas data, 11,4 MB.
+
+## Bahan untuk setiap kriteria
+
+Delapan kriteria keberhasilan pada BRD tidak semuanya memakai bahan yang sama.
+Tabel ini memetakan bahan mana yang dipakai kriteria mana.
+
+| Kriteria | Bahan dari repo ini | Wajib? |
+|---|---|---|
+| SC-01 akurasi kategori | `pairs.csv` + 65 foto yang dipasangkan | ya |
+| SC-02 kelengkapan field | `pairs.csv` + 65 foto yang dipasangkan | ya |
+| SC-03 waktu proses | 65 foto yang dipasangkan | ya |
+| SC-04 biaya per gambar | 65 foto yang dipasangkan | ya |
+| SC-05 penolakan duplikat | 1 foto, dikirim ulang | ya |
+| SC-06 pemetaan kolom | 3 Cash Report di `Cash Report dan Mutasi Rekening/` | ya |
+| SC-07 rekonsiliasi | 2 mutasi rekening PDF di `Cash Report dan Mutasi Rekening/` | ya |
+| SC-08 tanya jawab | tidak ada | tidak, memakai ledger hasil SC-01 sampai SC-04 |
+
+SC-07 mengunduh kedua PDF mutasi langsung dari repo ini. Nama berkas di sini
+memakai spasi, sedangkan kode menyimpannya dengan garis bawah; pemetaannya ada
+di `STATEMENT_FILES` pada `tests/sc_common.py`, jadi tidak perlu menyalin dan
+mengganti nama secara manual.
 
 ## Kegunaan `pairs.csv`
 
@@ -72,7 +93,16 @@ Kode ada di repo terpisah: `Project-Rework-G3-AI/ai-finance-assistant`, branch
 `test/integration-testing`. Petunjuk menjalankan evaluasi ada di
 `docs/sc-cara-menjalankan.md` pada repo tersebut.
 
-Ringkasnya, setelah repo ini di-clone di samping repo kode:
+Kode evaluasi bisa mengunduh bahan dari repo ini sendiri, jadi repo ini tidak
+wajib di-clone lebih dulu:
+
+```bash
+# dari dalam folder repo kode
+python3 tests/sc_runner.py --download      # foto dan pairs.csv
+python3 tests/_sc07_run.py                 # kedua PDF mutasi, lalu ukur SC-07
+```
+
+Kalau ingin memakai salinan lokal, clone repo ini di samping repo kode:
 
 ```bash
 git clone https://github.com/Project-Rework-G3-AI/ai-finance-assistant.git
@@ -92,6 +122,14 @@ SC_IMAGES=../rework-ai-finance-assistant-dataset/Bukti Transaksi Januari 2026
 
 Cara kedua lebih praktis karena tidak perlu menyebut dua jalur setiap kali
 menjalankan perintah.
+
+Nama repo dan folder bisa diganti tanpa mengubah kode, lewat variabel berikut:
+
+| Variabel | Bawaan |
+|---|---|
+| `GITHUB_DATASET_REPO` | `Project-Rework-G3-AI/rework-ai-finance-assistant-dataset` |
+| `GITHUB_DATASET_DIR` | kosong, berarti berkas ada di akar repo |
+| `GITHUB_DATASET_BRANCH` | `main` |
 
 ## Catatan tentang penamaan kategori
 
